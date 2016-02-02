@@ -294,6 +294,8 @@ class Stream(object):
         '''
         Allow temporary access to the underlying socket in blocking mode
         '''
+        if self._linebuffer:
+            raise IOError('There is unread buffered data.')
         try:
             os.set_blocking(self._fileno, True)
             yield self._file
@@ -332,6 +334,16 @@ class Stream(object):
             if not chunk:
                 return b''.join(chunks)
             chunks.append(chunk)
+
+    async def read_exactly(self, nbytes):
+        buffer = io.BytesIO()        
+        while nbytes > 0:
+            chunk = await self.read(nbytes)
+            if not chunk:
+                raise EOFError('Unexpected end of data')
+            buffer.write(chunk)
+            nbytes -= len(chunk)
+        return buffer.getvalue()
 
     async def readline(self):
         while True:
@@ -420,3 +432,6 @@ class Stream(object):
 
     def __exit__(self, *args):
         pass
+        
+
+    

@@ -11,7 +11,9 @@ and powerful.
 
 An Example
 ----------
-Here is a simple TCP echo server implemented using sockets and curio::
+Here is a simple TCP echo server implemented using sockets and curio:
+
+.. code:: python
 
     # echoserv.py
     
@@ -48,8 +50,10 @@ You'll also find that the above server can handle thousands of simultaneous
 client connections even though no threads are being used under the covers.
 
 Of course, if you prefer something a little higher level, you can have
-curio take of the fiddly bits related to setting up the server portion
-of the code::
+curio take care of the fiddly bits related to setting up the server portion
+of the code:
+
+.. code:: python
 
     # echoserv.py
 
